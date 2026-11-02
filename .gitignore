@@ -1,0 +1,79 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables & Secrets
+.env
+.env.local
+*.env
+credentials.json
+secrets/
+
+# Large Datasets (Raw & Processed)
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/amlsim/.gitkeep
+!data/raw/paysim/.gitkeep
+!data/raw/ieee_cis/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Models (trained binary weights)
+models/*.pkl
+models/*.joblib
+models/*.json
+!models/.gitkeep
+
+# Outputs (temporary / large runs)
+outputs/figures/*.png
+outputs/figures/*.html
+!outputs/figures/.gitkeep
+outputs/metrics/*.json
+!outputs/metrics/.gitkeep
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
