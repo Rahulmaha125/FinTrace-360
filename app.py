@@ -106,7 +106,8 @@ try:
     data_loaded = True
 except Exception as e:
     st.error(f"Error loading datasets: {e}")
-    data_loaded = False
+    st.info("Please ensure processed dataset CSV files exist under data/processed/.")
+    st.stop()
 
 # ------------------------------------------------------------------------------
 # 3. Sidebar Navigation & Global Filters

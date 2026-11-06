@@ -1,0 +1,46 @@
+{
+  "accounts": {
+    "total_rows": 20000,
+    "total_columns": 4,
+    "memory_mb": 0.48,
+    "missing_values": {
+      "nodeid": 0,
+      "isFraud": 0,
+      "init_balance": 0,
+      "fraudStep": 0
+    },
+    "duplicate_rows": 0,
+    "duplicate_node_ids": 0,
+    "negative_balances": 0,
+    "benign_count": 18196,
+    "alerted_count": 1804,
+    "alert_rate_pct": 9.02,
+    "min_balance": 100.04,
+    "max_balance": 599.92,
+    "mean_balance": 280.05
+  },
+  "transactions": {
+    "total_rows": 120558,
+    "total_columns": 4,
+    "memory_mb": 3.68,
+    "missing_values": {
+      "sourceNodeId": 0,
+      "targetNodeId": 0,
+      "value": 0,
+      "time": 0
+    },
+    "duplicate_rows": 1684,
+    "non_positive_amounts": 0,
+    "negative_time_steps": 0,
+    "orphan_source_accounts": 0,
+    "orphan_target_accounts": 0,
+    "self_loops": 15,
+    "min_step": 1,
+    "max_step": 149,
+    "min_amount": 2.51,
+    "max_amount": 599.91,
+    "mean_amount": 276.12,
+    "total_gross_value": 33287919.2
+  },
+  "overall_quality_status": "WARNINGS_FOUND"
+}

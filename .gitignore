@@ -46,7 +46,11 @@ data/raw/*
 !data/raw/amlsim/.gitkeep
 !data/raw/paysim/.gitkeep
 !data/raw/ieee_cis/.gitkeep
-data/processed/*
+
+# Processed datasets needed for Streamlit Cloud App & Analytics
+!data/processed/amlsim_accounts_clean.csv
+!data/processed/amlsim_transactions_clean.csv
+!data/processed/amlsim_account_features.csv
 !data/processed/.gitkeep
 
 # Models (trained binary weights)
@@ -55,11 +59,11 @@ models/*.joblib
 models/*.json
 !models/.gitkeep
 
-# Outputs (temporary / large runs)
-outputs/figures/*.png
-outputs/figures/*.html
+# Visual Figures & Metrics (tracked for GitHub README & Cloud App)
+!outputs/figures/*.png
+!outputs/figures/*.html
 !outputs/figures/.gitkeep
-outputs/metrics/*.json
+!outputs/metrics/*.json
 !outputs/metrics/.gitkeep
 
 # Jupyter Notebook Checkpoints
