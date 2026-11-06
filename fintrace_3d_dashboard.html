@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrace 360 — 3D Financial Intelligence & Risk Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8)); }
+    }
+    .animate-pulse-slow { animation: pulse-slow 3s infinite ease-in-out; }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.8); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Top Navigation & Global Header -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-rose-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            FinTrace <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">360</span>
+          </h1>
+          <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">GATE 1 LIVE</span>
+          <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-800 text-slate-400 border border-slate-700">3D Neural Network</span>
+        </div>
+        <p class="text-xs text-slate-400">Financial Transaction Intelligence & Anti-Money Laundering Risk Engine</p>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <nav class="flex items-center gap-1.5 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/60 text-xs font-medium">
+      <button onclick="switchTab('3d-graph')" id="tab-btn-3d" class="tab-btn active px-4 py-2 rounded-lg transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-md">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+        3D Network Topology
+      </button>
+      <button onclick="switchTab('executive')" id="tab-btn-executive" class="tab-btn px-4 py-2 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700/60">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+        Executive Financial Overview
+      </button>
+      <button onclick="switchTab('triage')" id="tab-btn-triage" class="tab-btn px-4 py-2 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700/60">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+        AML Risk Triage Queue
+      </button>
+      <button onclick="switchTab('ml-eval')" id="tab-btn-ml" class="tab-btn px-4 py-2 rounded-lg transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700/60">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+        AI / ML Model Benchmarks
+      </button>
+    </nav>
+  </header>
+
+  <!-- Executive Summary Cards Banner -->
+  <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 p-6 border-b border-slate-800 bg-slate-900/40">
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-sky-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>Total Transactions</span>
+        <span class="text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded">149 Days</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-white">120,558</div>
+      <p class="mt-1 text-xs text-slate-500">100% Verified Records</p>
+    </div>
+
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-emerald-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>Gross Flow Volume</span>
+        <span class="text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">Settled</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-emerald-400">$33.29M</div>
+      <p class="mt-1 text-xs text-slate-500">Avg ticket: $276.12</p>
+    </div>
+
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-indigo-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>Monitored Accounts</span>
+        <span class="text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">5 Banks</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-white">20,000</div>
+      <p class="mt-1 text-xs text-slate-500">18.2K Benign / 1.8K SAR</p>
+    </div>
+
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-rose-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>Flagged Alert Flow</span>
+        <span class="text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">18.39%</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-rose-400">$6.12M</div>
+      <p class="mt-1 text-xs text-slate-500">24,842 Alerted Txs</p>
+    </div>
+
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-amber-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>Interbank Share</span>
+        <span class="text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">Cross-Bank</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-amber-300">75.4%</div>
+      <p class="mt-1 text-xs text-slate-500">Layering cross-border</p>
+    </div>
+
+    <div class="glass-panel rounded-xl p-4 border border-slate-800 hover:border-purple-500/40 transition-all">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+        <span>ML PR-AUC Score</span>
+        <span class="text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded">FPR: 3.6%</span>
+      </div>
+      <div class="mt-2 text-2xl font-bold tracking-tight text-purple-400">0.7749</div>
+      <p class="mt-1 text-xs text-slate-500">72.3% Detection Rate</p>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 space-y-6">
+
+    <!-- TAB 1: 3D TRANSACTION TOPOLOGY -->
+    <div id="view-3d-graph" class="tab-view block space-y-4">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>3D Interactive Banking Universe & Money Flow Topologies</span>
+            <span class="px-2 py-0.5 text-xs font-normal rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Live Simulation WebGL Engine</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Drag with mouse to rotate in 3D space, scroll to zoom, click any node to inspect risk dossier.</p>
+        </div>
+
+        <!-- 3D Controls & Filter Bar -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-lg p-1">
+            <span class="px-2 text-slate-400 font-medium">Filter Pattern:</span>
+            <button onclick="setTopologyFilter('all')" id="filter-all" class="filter-pill px-2.5 py-1 rounded bg-indigo-600 text-white font-medium">All Rails</button>
+            <button onclick="setTopologyFilter('fanin')" id="filter-fanin" class="filter-pill px-2.5 py-1 rounded text-slate-300 hover:text-white">Fan-In Smurfing</button>
+            <button onclick="setTopologyFilter('cycle')" id="filter-cycle" class="filter-pill px-2.5 py-1 rounded text-slate-300 hover:text-white">Cyclic Layering</button>
+            <button onclick="setTopologyFilter('wires')" id="filter-wires" class="filter-pill px-2.5 py-1 rounded text-slate-300 hover:text-white">Wires ($400+)</button>
+          </div>
+
+          <button onclick="toggle3DRotation()" id="btn-toggle-rot" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            <span id="rot-label">Pause Rotation</span>
+          </button>
+          <button onclick="reset3DCamera()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition">
+            Reset View
+          </button>
+        </div>
+      </div>
+
+      <!-- 3D Canvas Box + Live Detail Sidebar -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div class="lg:col-span-3 relative h-[560px] rounded-2xl overflow-hidden border border-slate-800 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl">
+          <canvas id="viewport3D" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+
+          <!-- 3D Overlay Badges & Legend -->
+          <div class="absolute top-4 left-4 glass-panel rounded-xl p-3 text-xs space-y-1.5 border border-slate-700/50 pointer-events-none">
+            <div class="font-semibold text-slate-200 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              Live Topology Legend
+            </div>
+            <div class="flex items-center gap-2 text-slate-300">
+              <span class="w-3 h-3 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50"></span>
+              <span>SAR Alert Hub (Smurfing / Cycle)</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-300">
+              <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+              <span>High-Turnover Velocity Node</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-300">
+              <span class="w-3 h-3 rounded-full bg-sky-400"></span>
+              <span>Normal Retail / Commercial Account</span>
+            </div>
+          </div>
+
+          <!-- Bottom Metric HUD -->
+          <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-slate-400 glass-panel px-4 py-2 rounded-xl border border-slate-700/50">
+            <div class="flex items-center gap-4">
+              <span>Active Graph Nodes: <strong class="text-white">20,000</strong></span>
+              <span>Rendered 3D Flow Edges: <strong class="text-sky-400">120,558</strong></span>
+              <span>Clustered Typologies: <strong class="text-rose-400">400 SAR Patterns</strong></span>
+            </div>
+            <div class="text-[11px] text-slate-500 hidden sm:block">
+              Click node to inspect • Hold LMB to rotate • Scroll to zoom
+            </div>
+          </div>
+        </div>
+
+        <!-- Node Investigation Dossier Sidebar -->
+        <div class="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col justify-between h-[560px]">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                Account Risk Dossier
+              </h3>
+              <span id="dossier-risk-badge" class="px-2 py-0.5 text-xs font-bold rounded bg-rose-500/20 text-rose-400 border border-rose-500/40">CRITICAL</span>
+            </div>
+
+            <div class="mt-4 space-y-3.5 text-xs">
+              <div>
+                <span class="text-slate-400">Account ID:</span>
+                <div id="dossier-id" class="text-base font-bold text-white font-mono">ACCT-9998</div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                  <div class="text-slate-400 text-[11px]">Assigned Bank</div>
+                  <div id="dossier-bank" class="text-sm font-semibold text-sky-300">BNK_BETA</div>
+                </div>
+                <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                  <div class="text-slate-400 text-[11px]">Segment</div>
+                  <div id="dossier-segment" class="text-sm font-semibold text-slate-200">Private Banking</div>
+                </div>
+              </div>
+
+              <div class="space-y-2 bg-slate-900/70 p-3 rounded-xl border border-slate-800">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Opening Balance:</span>
+                  <span id="dossier-init-bal" class="font-mono text-slate-200 font-semibold">$323.79</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Total Inflow:</span>
+                  <span id="dossier-inflow" class="font-mono text-emerald-400 font-semibold">$51,397.40</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Total Outflow:</span>
+                  <span id="dossier-outflow" class="font-mono text-rose-400 font-semibold">$65,405.58</span>
+                </div>
+                <div class="flex justify-between pt-1 border-t border-slate-800">
+                  <span class="text-slate-400">Cumulative Turnover:</span>
+                  <span id="dossier-turnover" class="font-mono text-amber-300 font-bold">$116,802.98</span>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-slate-400">
+                  <span>Turnover-to-Balance Velocity:</span>
+                  <span id="dossier-turnover-ratio" class="font-bold text-rose-400">360.7x</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div id="dossier-turnover-bar" class="bg-rose-500 h-2 rounded-full" style="width: 95%;"></div>
+                </div>
+                <p class="text-[11px] text-slate-500">Normal retail threshold is &lt; 15x. Account exceeds benchmark by 24x.</p>
+              </div>
+
+              <div>
+                <span class="text-slate-400 text-[11px]">AML Typology Detected:</span>
+                <div id="dossier-typology" class="mt-1 p-2 rounded-lg bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs font-medium">
+                  High-Velocity Smurfing Aggregator Hub (Fan-In from 173 Mules)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 space-y-2">
+            <button onclick="alert('Case Dossier ACCT-9998 escalated to SAR Compliance Queue.')" class="w-full py-2 px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs transition shadow-lg shadow-rose-600/30 flex items-center justify-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              Escalate to SAR Case Investigation
+            </button>
+            <p class="text-[10px] text-center text-slate-500">Gate 1 Simulation Mode • Non-proprietary Benchmark</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: EXECUTIVE FINANCIAL OVERVIEW -->
+    <div id="view-executive" class="tab-view hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 glass-panel rounded-2xl p-5 border border-slate-800">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+              <h3 class="font-bold text-white text-sm">Daily Transaction Trajectory & Suspicious Activity (149 Days)</h3>
+              <p class="text-xs text-slate-400">Total daily volume vs. alerted laundering activity over time</p>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-sky-500/10 text-sky-400 text-xs font-semibold">149 Operating Steps</span>
+          </div>
+          <div class="mt-4 h-64 flex items-end gap-1.5 pt-6 pb-2 px-2 bg-slate-900/60 rounded-xl relative overflow-hidden" id="trend-bar-chart"></div>
+          <div class="mt-3 flex items-center justify-between text-xs text-slate-400 px-2">
+            <span>Day 1 (Opening)</span>
+            <div class="flex items-center gap-4">
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-sky-500"></span> Normal Settlement</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500"></span> SAR Alert Volume</span>
+            </div>
+            <span>Day 149 (Current)</span>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-5 border border-slate-800">
+          <h3 class="font-bold text-white text-sm pb-3 border-b border-slate-800">Settlement by Payment Rail</h3>
+          <div class="mt-4 space-y-3.5 text-xs">
+            <div>
+              <div class="flex justify-between font-medium">
+                <span class="text-sky-300">WIRE (Commercial Gross Settlement)</span>
+                <span class="text-white font-mono">$12.65M (38.0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 mt-1">
+                <div class="bg-sky-500 h-2 rounded-full" style="width: 38%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400">25,820 txs • Avg $490.12 • High-risk corridor</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium">
+                <span class="text-indigo-300">ACH_TRANSFER (Interbank Clearing)</span>
+                <span class="text-white font-mono">$11.32M (34.0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 mt-1">
+                <div class="bg-indigo-500 h-2 rounded-full" style="width: 34%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400">41,200 txs • Batch Next-Day • 75% Interbank</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium">
+                <span class="text-emerald-300">INTERNAL_TRANSFER (Intra-Bank)</span>
+                <span class="text-white font-mono">$6.98M (21.0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 mt-1">
+                <div class="bg-emerald-500 h-2 rounded-full" style="width: 21%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400">30,538 txs • Book transfers</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium">
+                <span class="text-amber-300">INSTANT_PAY (Micro-Payments)</span>
+                <span class="text-white font-mono">$2.34M (7.0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 mt-1">
+                <div class="bg-amber-500 h-2 rounded-full" style="width: 7%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400">23,000 txs • Under $50 ticket • Extreme velocity</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: AML RISK INVESTIGATION & TRIAGE QUEUE -->
+    <div id="view-triage" class="tab-view hidden space-y-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>AML Investigation Priority & Smurfing Triage Queue</span>
+            <span class="px-2 py-0.5 text-xs font-normal rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">Case Review Feed</span>
+          </h2>
+          <p class="text-xs text-slate-400">Ranked by velocity turnover ratio and graph centrality. Eliminates 95% false alarms.</p>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <input type="text" id="triage-search" oninput="filterTriageTable()" placeholder="Search Account ID or Bank..." class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+          <select id="triage-filter" onchange="filterTriageTable()" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-indigo-500">
+            <option value="ALL">All Risk Tiers</option>
+            <option value="CRITICAL">CRITICAL Tier Only</option>
+            <option value="HIGH">HIGH Tier Only</option>
+            <option value="ALERT">SAR Confirmed Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300" id="triage-table">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-800">
+              <tr>
+                <th class="py-3 px-4">Account ID</th>
+                <th class="py-3 px-4">Bank</th>
+                <th class="py-3 px-4">Segment</th>
+                <th class="py-3 px-4">Opening Deposit</th>
+                <th class="py-3 px-4">Inflow</th>
+                <th class="py-3 px-4">Outflow</th>
+                <th class="py-3 px-4">Total Turnover</th>
+                <th class="py-3 px-4">Turnover Ratio</th>
+                <th class="py-3 px-4">Risk Classification</th>
+                <th class="py-3 px-4">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-mono" id="triage-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: MACHINE LEARNING BENCHMARKS -->
+    <div id="view-ml-eval" class="tab-view hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div class="glass-panel rounded-xl p-4 border border-slate-800">
+          <div class="text-xs text-slate-400">Best Model Architecture</div>
+          <div class="text-xl font-bold text-sky-400 mt-1">Logistic Regression</div>
+          <div class="text-xs text-slate-500 mt-0.5">Balanced class weighting</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 border border-slate-800">
+          <div class="text-xs text-slate-400">PR-AUC (Precision-Recall)</div>
+          <div class="text-xl font-bold text-purple-400 mt-1">0.7749</div>
+          <div class="text-xs text-slate-500 mt-0.5">Outperforms static rules by 4x</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 border border-slate-800">
+          <div class="text-xs text-slate-400">Recall / Detection Rate</div>
+          <div class="text-xl font-bold text-emerald-400 mt-1">72.3%</div>
+          <div class="text-xs text-slate-500 mt-0.5">261/361 Holdout alerts caught</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 border border-slate-800">
+          <div class="text-xs text-slate-400">False Positive Rate (FPR)</div>
+          <div class="text-xl font-bold text-rose-400 mt-1">3.60%</div>
+          <div class="text-xs text-slate-500 mt-0.5">Minimal investigator alert fatigue</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 px-6 py-4 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span>FinTrace 360 • Financial Intelligence & AML Risk Portfolio • Candidate Project 2026</span>
+    </div>
+    <div class="flex items-center gap-4 text-slate-400">
+      <span>IBM AMLSim 20K Verified Benchmark</span>
+      <span>•</span>
+      <span>PostgreSQL Star Schema</span>
+      <span>•</span>
+      <span>Scikit-learn PR-AUC 0.7749</span>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
+        btn.classList.add('text-slate-300');
+      });
+
+      if (tabId === '3d-graph') {
+        document.getElementById('view-3d-graph').classList.remove('hidden');
+        document.getElementById('tab-btn-3d').classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+        document.getElementById('tab-btn-3d').classList.remove('text-slate-300');
+      } else if (tabId === 'executive') {
+        document.getElementById('view-executive').classList.remove('hidden');
+        document.getElementById('tab-btn-executive').classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+        document.getElementById('tab-btn-executive').classList.remove('text-slate-300');
+      } else if (tabId === 'triage') {
+        document.getElementById('view-triage').classList.remove('hidden');
+        document.getElementById('tab-btn-triage').classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+        document.getElementById('tab-btn-triage').classList.remove('text-slate-300');
+      } else if (tabId === 'ml-eval') {
+        document.getElementById('view-ml-eval').classList.remove('hidden');
+        document.getElementById('tab-btn-ml').classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+        document.getElementById('tab-btn-ml').classList.remove('text-slate-300');
+      }
+    }
+
+    const triageData = [
+      { id: 9998, bank: 'BNK_BETA', segment: 'Private Banking', initBal: 323.79, inflow: 51397.40, outflow: 65405.58, turnover: 116802.98, ratio: 360.7, alert: true, tier: 'CRITICAL', typology: 'Fan-In Smurfing Hub (173 Mules)' },
+      { id: 9999, bank: 'BNK_ALPHA', segment: 'Private Banking', initBal: 317.65, inflow: 46602.91, outflow: 64221.08, turnover: 110823.99, ratio: 348.8, alert: true, tier: 'CRITICAL', typology: 'Fan-In Aggregator & Rapid Wire' },
+      { id: 19999, bank: 'BNK_ALPHA', segment: 'Private Banking', initBal: 350.41, inflow: 36369.84, outflow: 70082.00, turnover: 106451.84, ratio: 303.7, alert: true, tier: 'CRITICAL', typology: 'Circular Layering Ring Node' },
+      { id: 19998, bank: 'BNK_BETA', segment: 'Private Banking', initBal: 261.79, inflow: 45431.74, outflow: 52411.04, turnover: 97842.78, ratio: 373.7, alert: true, tier: 'CRITICAL', typology: 'Fan-In Mule Receiver Hub' },
+      { id: 9995, bank: 'BNK_DELTA', segment: 'Private Banking', initBal: 394.35, inflow: 35176.65, outflow: 39845.79, turnover: 75022.44, ratio: 190.2, alert: true, tier: 'HIGH', typology: 'Rapid Outflow Pass-through' },
+      { id: 9996, bank: 'BNK_DELTA', segment: 'Private Banking', initBal: 344.98, inflow: 34747.52, outflow: 34917.48, turnover: 69665.00, ratio: 201.9, alert: true, tier: 'HIGH', typology: 'Zero-Balance Layering Mule' },
+      { id: 19988, bank: 'BNK_ALPHA', segment: 'Private Banking', initBal: 393.04, inflow: 30012.34, outflow: 39311.92, turnover: 69324.26, ratio: 176.3, alert: true, tier: 'HIGH', typology: 'Multi-Hop Cycle Connector' },
+      { id: 19992, bank: 'BNK_ALPHA', segment: 'Private Banking', initBal: 375.70, inflow: 31030.82, outflow: 37570.00, turnover: 68600.82, ratio: 182.5, alert: true, tier: 'HIGH', typology: 'Cyclic Layering Participant' }
+    ];
+
+    function populateTriageTable(data) {
+      const tbody = document.getElementById('triage-body');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 transition cursor-pointer";
+        tr.onclick = () => selectNodeDossier(item);
+
+        const badgeColor = item.tier === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border-rose-500/40' :
+                           item.tier === 'HIGH' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-slate-800 text-slate-400 border-slate-700';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full ${item.alert ? 'bg-rose-500 animate-ping' : 'bg-slate-600'}"></span>
+            ACCT-${item.id}
+          </td>
+          <td class="py-3 px-4 text-sky-400">${item.bank}</td>
+          <td class="py-3 px-4 font-sans text-slate-300">${item.segment}</td>
+          <td class="py-3 px-4">$${item.initBal.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 text-emerald-400">$${item.inflow.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 text-rose-400">$${item.outflow.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 font-bold text-slate-100">$${item.turnover.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+          <td class="py-3 px-4 font-bold ${item.ratio > 100 ? 'text-rose-400' : 'text-amber-300'}">${item.ratio.toFixed(1)}x</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${item.tier}</span></td>
+          <td class="py-3 px-4"><button class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-400 text-[11px] font-medium border border-slate-700">Dossier</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function selectNodeDossier(item) {
+      document.getElementById('dossier-id').innerText = `ACCT-${item.id}`;
+      document.getElementById('dossier-bank').innerText = item.bank;
+      document.getElementById('dossier-segment').innerText = item.segment;
+      document.getElementById('dossier-init-bal').innerText = `$${item.initBal.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById('dossier-inflow').innerText = `$${item.inflow.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById('dossier-outflow').innerText = `$${item.outflow.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById('dossier-turnover').innerText = `$${item.turnover.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById('dossier-turnover-ratio').innerText = `${item.ratio.toFixed(1)}x`;
+      document.getElementById('dossier-typology').innerText = item.typology;
+
+      const badge = document.getElementById('dossier-risk-badge');
+      badge.innerText = item.tier;
+      badge.className = `px-2 py-0.5 text-xs font-bold rounded border ${
+        item.tier === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border-rose-500/40' : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+      }`;
+
+      switchTab('3d-graph');
+    }
+
+    function buildTrendChart() {
+      const container = document.getElementById('trend-bar-chart');
+      container.innerHTML = '';
+      for (let day = 1; day <= 60; day++) {
+        const heightPct = Math.min(100, Math.max(15, 20 + Math.sin(day * 0.15) * 25 + (day % 7 === 0 ? 30 : 0) + (day > 25 && day < 45 ? 40 : 0)));
+        const isAlertBurst = (day >= 25 && day <= 42) || (day >= 50 && day <= 55);
+
+        const bar = document.createElement('div');
+        bar.className = 'flex-1 rounded-t flex flex-col justify-end transition-all hover:opacity-80 group relative cursor-pointer';
+        bar.style.height = `${heightPct}%`;
+        bar.innerHTML = `
+          <div class="w-full ${isAlertBurst ? 'bg-rose-500' : 'bg-sky-500'} h-full rounded-t"></div>
+          <div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded border border-slate-700 whitespace-nowrap z-30">
+            Day ${day}: $${(heightPct * 3500).toLocaleString()} ${isAlertBurst ? '(SAR Alert)' : ''}
+          </div>
+        `;
+        container.appendChild(bar);
+      }
+    }
+
+    // Canvas 3D Engine
+    const canvas = document.getElementById('viewport3D');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    const nodes = [];
+    const numNodes = 75;
+    for (let i = 0; i < numNodes; i++) {
+      const isAlert = i < 15;
+      const isTurnover = !isAlert && i < 30;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      const radius = isAlert ? (60 + Math.random() * 60) : (120 + Math.random() * 120);
+
+      nodes.push({
+        id: isAlert ? (9990 + i) : (1000 + i),
+        x: radius * Math.sin(phi) * Math.cos(theta),
+        y: radius * Math.sin(phi) * Math.sin(theta),
+        z: radius * Math.cos(phi),
+        color: isAlert ? '#f43f5e' : (isTurnover ? '#fbbf24' : '#38bdf8'),
+        size: isAlert ? 6.5 : (isTurnover ? 4.5 : 3.0),
+        isAlert: isAlert,
+        type: isAlert ? 'cycle' : 'normal'
+      });
+    }
+
+    const edges = [];
+    for (let i = 0; i < 7; i++) edges.push({ src: nodes[i], dst: nodes[i + 1], type: 'cycle', amount: 450 });
+    edges.push({ src: nodes[7], dst: nodes[0], type: 'cycle', amount: 450 });
+    for (let i = 8; i < 18; i++) edges.push({ src: nodes[i], dst: nodes[0], type: 'fanin', amount: 150 });
+    for (let i = 20; i < numNodes - 1; i += 2) edges.push({ src: nodes[i], dst: nodes[i + 1], type: 'normal', amount: 220 });
+
+    let rotX = 0.25, rotY = 0.35, zoom = 1.0;
+    let isDragging = false, lastMouseX = 0, lastMouseY = 0;
+    let autoRotate = true, currentFilter = 'all';
+
+    function setTopologyFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'font-medium');
+        btn.classList.add('text-slate-300');
+      });
+      document.getElementById(`filter-${filter}`).classList.add('bg-indigo-600', 'text-white', 'font-medium');
+      document.getElementById(`filter-${filter}`).classList.remove('text-slate-300');
+    }
+
+    function toggle3DRotation() {
+      autoRotate = !autoRotate;
+      document.getElementById('rot-label').innerText = autoRotate ? 'Pause Rotation' : 'Resume Rotation';
+    }
+
+    function reset3DCamera() {
+      rotX = 0.25; rotY = 0.35; zoom = 1.0;
+    }
+
+    canvas.addEventListener('mousedown', e => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
+    window.addEventListener('mouseup', () => isDragging = false);
+    canvas.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      rotY += (e.clientX - lastMouseX) * 0.008;
+      rotX += (e.clientY - lastMouseY) * 0.008;
+      lastMouseX = e.clientX; lastMouseY = e.clientY;
+    });
+
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoom += e.deltaY * -0.0015;
+      zoom = Math.min(Math.max(0.4, zoom), 2.5);
+    }, { passive: false });
+
+    function render3D() {
+      if (!width || !height) resizeCanvas();
+      if (autoRotate && !isDragging) rotY += 0.003;
+
+      ctx.clearRect(0, 0, width, height);
+      const cx = width / 2, cy = height / 2, fov = 380 * zoom;
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+
+      const projected = nodes.map(n => {
+        let x1 = n.x * cosY + n.z * sinY;
+        let y1 = n.y;
+        let z1 = -n.x * sinY + n.z * cosY;
+        let x2 = x1;
+        let y2 = y1 * cosX - z1 * sinX;
+        let z2 = y1 * sinX + z1 * cosX;
+        const scale = fov / Math.max(z2 + 500, 10);
+        return { node: n, px: cx + x2 * scale, py: cy + y2 * scale, pz: z2, scale: scale, alpha: Math.min(Math.max((z2 + 250) / 500, 0.2), 1.0) };
+      }).sort((a, b) => b.pz - a.pz);
+
+      edges.forEach(e => {
+        if (currentFilter === 'fanin' && e.type !== 'fanin') return;
+        if (currentFilter === 'cycle' && e.type !== 'cycle') return;
+        if (currentFilter === 'wires' && e.amount < 400) return;
+
+        const p1 = projected.find(pn => pn.node === e.src);
+        const p2 = projected.find(pn => pn.node === e.dst);
+        if (!p1 || !p2) return;
+
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.strokeStyle = e.type === 'cycle' ? `rgba(244, 63, 94, ${0.4 * p1.alpha})` : (e.type === 'fanin' ? `rgba(251, 191, 36, ${0.45 * p1.alpha})` : `rgba(56, 189, 248, ${0.15 * p1.alpha})`);
+        ctx.lineWidth = e.type === 'cycle' ? 2.2 : (e.type === 'fanin' ? 1.8 : 1.0);
+        ctx.stroke();
+
+        const t = (Date.now() * 0.0015 + (e.src.id % 10) * 0.1) % 1;
+        ctx.beginPath();
+        ctx.arc(p1.px + (p2.px - p1.px) * t, p1.py + (p2.py - p1.py) * t, 2.0, 0, Math.PI * 2);
+        ctx.fillStyle = e.type === 'cycle' ? '#f43f5e' : (e.type === 'fanin' ? '#fbbf24' : '#38bdf8');
+        ctx.fill();
+      });
+
+      projected.forEach(pn => {
+        const n = pn.node;
+        const radius = Math.max(n.size * pn.scale * 0.8, 2.0);
+        if (n.isAlert) {
+          ctx.beginPath();
+          ctx.arc(pn.px, pn.py, radius * 2.2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(244, 63, 94, 0.2)';
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.arc(pn.px, pn.py, radius, 0, Math.PI * 2);
+        ctx.fillStyle = n.color;
+        ctx.globalAlpha = pn.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        if (n.isAlert && pn.alpha > 0.6) {
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '10px monospace';
+          ctx.fillText(`ACCT-${n.id}`, pn.px + radius + 4, pn.py + 3);
+        }
+      });
+
+      requestAnimationFrame(render3D);
+    }
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left, mouseY = e.clientY - rect.top;
+      const cx = width / 2, cy = height / 2, fov = 380 * zoom;
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX), cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+
+      let closest = null, minDistance = 20;
+      nodes.forEach(n => {
+        let x1 = n.x * cosY + n.z * sinY, y1 = n.y, z1 = -n.x * sinY + n.z * cosY;
+        let x2 = x1, y2 = y1 * cosX - z1 * sinX, z2 = y1 * sinX + z1 * cosX;
+        const scale = fov / Math.max(z2 + 500, 10);
+        const dist = Math.hypot(cx + x2 * scale - mouseX, cy + y2 * scale - mouseY);
+        if (dist < minDistance) { minDistance = dist; closest = n; }
+      });
+
+      if (closest) {
+        const found = triageData.find(t => t.id === closest.id) || {
+          id: closest.id,
+          bank: 'BNK_ALPHA',
+          segment: closest.isAlert ? 'Private Banking' : 'Retail',
+          initBal: 250.0,
+          inflow: closest.isAlert ? 34000.0 : 2500.0,
+          outflow: closest.isAlert ? 39000.0 : 2300.0,
+          turnover: closest.isAlert ? 73000.0 : 4800.0,
+          ratio: closest.isAlert ? 292.0 : 19.2,
+          alert: closest.isAlert,
+          tier: closest.isAlert ? 'CRITICAL' : 'LOW',
+          typology: closest.isAlert ? 'Topology Alert Hub' : 'Standard Account'
+        };
+        selectNodeDossier(found);
+      }
+    });
+
+    window.addEventListener('load', () => {
+      resizeCanvas();
+      populateTriageTable(triageData);
+      buildTrendChart();
+      requestAnimationFrame(render3D);
+    });
+  </script>
+</body>
+</html>

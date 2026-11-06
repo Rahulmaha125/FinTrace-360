@@ -1,0 +1,5 @@
+model_name,precision,recall,f1_score,pr_auc,roc_auc,false_positive_rate,true_positives,false_positives,true_negatives,false_negatives
+Logistic Regression (Baseline),0.665,0.7202,0.6915,0.7749,0.8955,0.036,260.0,131.0,3508.0,101.0
+Random Forest,0.607,0.723,0.6599,0.7576,0.9091,0.0464,261.0,169.0,3470.0,100.0
+XGBoost,0.5775,0.7119,0.6377,0.7627,0.9032,0.0517,257.0,188.0,3451.0,104.0
+Isolation Forest (Unsupervised),0.2717,0.2687,0.2702,0.261,0.7885,0.0714,97.0,260.0,3379.0,264.0
