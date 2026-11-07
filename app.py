@@ -140,19 +140,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def render_metric_card(title: str, value: str, subtitle: str = "", badge_text: str | None = None, badge_type: str = "nominal"):
-    badge_html = ""
-    if badge_text:
-        badge_html = f'<span class="badge-{badge_type}" style="margin-left: 8px;">{badge_text}</span>'
-    html = f"""
-    <div class="metric-card-container">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="metric-card-title">{title}</span>
-            {badge_html}
-        </div>
-        <div class="metric-card-val">{value}</div>
-        <div class="metric-card-sub">{subtitle}</div>
-    </div>
-    """
+    badge_html = f'<span class="badge-{badge_type}" style="margin-left: 8px;">{badge_text}</span>' if badge_text else ""
+    html = (
+        f'<div class="metric-card-container">'
+        f'<div style="display: flex; justify-content: space-between; align-items: center;">'
+        f'<span class="metric-card-title">{title}</span>{badge_html}'
+        f'</div>'
+        f'<div class="metric-card-val">{value}</div>'
+        f'<div class="metric-card-sub">{subtitle}</div>'
+        f'</div>'
+    )
     st.markdown(html, unsafe_allow_html=True)
 
 def apply_fintech_theme(fig, height=340):
@@ -934,4 +931,4 @@ TXN_1015,2024-01-08,CORP_ACCT_03,VENDOR_BETA,"350.00",WIRE,Software License
 # 7. Global Footer
 # ------------------------------------------------------------------------------
 st.markdown("---")
-st.caption("FinTrace 360 • Enterprise Financial Transaction Intelligence & Risk Engine • Candidate Portfolio 2026")
+st.caption("FinTrace 360 • Enterprise Financial Transaction Intelligence & Risk Engine 2026")
