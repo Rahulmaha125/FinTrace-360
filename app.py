@@ -143,14 +143,17 @@ def render_metric_card(title: str, value: str, subtitle: str = "", badge_text: s
     badge_html = f'<span class="badge-{badge_type}" style="margin-left: 8px;">{badge_text}</span>' if badge_text else ""
     html = (
         f'<div class="metric-card-container">'
-        f'<div style="display: flex; justify-content: space-between; align-items: center;">'
+        f'<div style="display:flex; justify-content:space-between; align-items:center;">'
         f'<span class="metric-card-title">{title}</span>{badge_html}'
         f'</div>'
         f'<div class="metric-card-val">{value}</div>'
         f'<div class="metric-card-sub">{subtitle}</div>'
         f'</div>'
     )
-    st.markdown(html, unsafe_allow_html=True)
+    if hasattr(st, "html"):
+        st.html(html)
+    else:
+        st.markdown(html, unsafe_allow_html=True)
 
 def apply_fintech_theme(fig, height=340):
     fig.update_layout(
