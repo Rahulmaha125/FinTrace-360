@@ -1041,4 +1041,4 @@ TXN_1015,2024-01-08,CORP_ACCT_03,VENDOR_BETA,"350.00",WIRE,Software License
 # 7. Global Footer
 # ------------------------------------------------------------------------------
 st.markdown("---")
-st.caption("FinTrace 360 • Enterprise Financial Transaction Intelligence & Risk Engine • Candidate Portfolio 2026")
+st.caption("FinTrace 360 - 2026")
